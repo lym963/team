@@ -178,14 +178,14 @@
 							<ul class="submenu">
 								
 								<li>
-									<a href="cate_list.html">
+									<a href="{{url('call/index')}}">
 										<i class="icon-double-angle-right"></i>
 										客户拜访列表
 									</a>
 								</li>
 
 								<li>
-									<a href="cate_add.html">
+									<a href="{{url('call/create')}}">
 										<i class="icon-double-angle-right"></i>
 										客户拜访添加
 									</a>

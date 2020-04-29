@@ -28,46 +28,33 @@
 												<thead>
 													<tr>
 														<th>ID</th>
-														<th>管理员名</th>
-														<th>职业</th>
+														<th>业务员名称</th>
+														<th>性别</th>
 														<th>电话</th>
-														<th>email</th>
-														<th>添加时间</th>
+														<th>手机</th>
 														<th>操作</th>
 													</tr>
 												</thead>
 
 												<tbody>
+													@foreach($sellInfo as $v)
 													<tr>
-														<td>1</td>
-														<td>admin</td>
-														<td>php高级工程师</td>
-														<td>13177878787</td>
-														<td>3123@163.com</td>
-														<td>2019-10-20 13:23:24</td>
+														<td>{{$v->sell_id}}</td>
+														<td>{{$v->sell_name}}</td>
+														<td>@if($v->sell_sex==1)男@else女@endif</td>
+														<td>{{$v->sell_phone}}</td>
+														<td>{{$v->sell_tel}}</td>
 														<td>
-														<button class="btn">编辑</button>
-														<button class="btn btn-danger">删除</button>
+														<a href="{{url('sell/edit/'.$v->sell_id)}}"><button class="btn">编辑</button></a>
+														<a href="{{url('sell/destroy/'.$v->sell_id)}}"><button class="btn btn-danger">删除</button></a>
 														</td>
 
 													</tr>
-													<tr>
-														<td>1</td>
-														<td>admin</td>
-														<td>摄影师</td>
-														<td>13177979797</td>
-														<td>3VDD@163.com</td>
-														<td>2019-10-20 13:23:24</td>
-														<td>
-														<button class="btn">编辑</button>
-														<button class="btn btn-danger">删除</button>
-														</td>
-
-													</tr>										
-
-													
+												
+													@endforeach																		
 												</tbody>
 											</table>
+											{{$sellInfo->links()}}
 										</div><!-- /.table-responsive -->
 									</div><!-- /span -->
 								</div><!-- /row -->
