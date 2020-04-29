@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\validation\Rule;
+use App\Client;//客户表
 use App\sell;//业务员表
-class SellController extends Controller
+use App\Call;//访谈表
+class CallController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,10 @@ class SellController extends Controller
      */
     public function index()
     {
-        //查询数据库表
-        $sellInfo = sell::paginate(3);
-        return view("admin.sell.index",['sellInfo'=>$sellInfo]);
+        //查询数据
+        $callInfo = Call::select('call.*','client.client_name','sell.sell_name')->leftJoin('client','call.client_id','=','client.client_id')->leftJoin('sell','call.sell_id','=','sell.sell_id')->paginate(3);
+        //渲染页面
+        return view('admin.call.index',['callInfo'=>$callInfo]);
     }
 
     /**
@@ -27,7 +29,12 @@ class SellController extends Controller
      */
     public function create()
     {
-        return view("admin.sell.create");
+        //访谈客户的id和姓名
+        $client = Client::select('client_id','client_name')->get();
+        //访谈业务员的id和姓名
+        $sell = sell::select('sell_id','sell_name')->get();
+        //渲染页面
+        return view('admin.call.create',['client'=>$client,'sell'=>$sell]);
     }
 
     /**
@@ -38,22 +45,13 @@ class SellController extends Controller
      */
     public function store(Request $request)
     {
-        //接值
+        //接收参数
         $post = request()->except('_token');
-        //验证
-        request()->validate([
-            'sell_name' =>'unique:sell|required',
-            'sell_tel' =>'required|regex:/^1[34578]\d{9}$/',
-        ],[
-            'sell_name.required' => '业务员名称不可为空',
-            'sell_name.unique' => '业务员名称已存在',
-            'sell_tel.required' => '业务员电话已存在',
-            'sell_tel.regex' => '输入的手机号有误',
-        ]);
-        $res = sell::insert($post);
-        //判断是否成功
+        //入库
+        $res = Call::insert($post);
+        //判断
         if($res){
-            return redirect('sell/index');
+            return redirect('call/index');
         }
     }
 
@@ -76,10 +74,14 @@ class SellController extends Controller
      */
     public function edit($id)
     {
-        //获取修改的条数
-        $sellInfo = sell::find($id);
+        //访谈客户的id和姓名
+        $client = Client::select('client_id','client_name')->get();
+        //访谈业务员的id和姓名
+        $sell = sell::select('sell_id','sell_name')->get();
+        //查询表
+        $callInfo = Call::find($id);
         //渲染页面
-        return view('admin.sell.edit',['sellInfo'=>$sellInfo]);
+        return view('admin.call.edit',['client'=>$client,'sell'=>$sell,'callInfo'=>$callInfo]);
     }
 
     /**
@@ -92,22 +94,12 @@ class SellController extends Controller
     public function update(Request $request, $id)
     {
         //接值
-        $post = $request->except('_token');
-        //验证
-        request()->validate([
-            'sell_name' =>[Rule::unique('sell')->ignore($id,'sell_id'),'required'],
-            'sell_tel' =>'required|regex:/^1[34578]\d{9}$/',
-        ],[
-            'sell_name.required' => '业务员名称不可为空',
-            'sell_name.unique' => '业务员名称已存在',
-            'sell_tel.required' => '业务员电话已存在',
-            'sell_tel.regex' => '输入的手机号有误',
-        ]);
+        $post = request()->except('_token');
         //修改
-        $res = sell::where('sell_id',$id)->update($post);
+        $res = Call::where('call_id',$id)->update($post);
         //判断
         if($res!==false){
-            return redirect('sell/index');
+            return redirect('call/index');
         }
     }
 
@@ -120,10 +112,10 @@ class SellController extends Controller
     public function destroy($id)
     {
         //删除
-        $res = sell::destroy($id);
+        $res = Call::destroy($id);
         //判断
         if($res){
-            return redirect('sell/index');
+            return redirect('call/index');
         }
     }
 }
