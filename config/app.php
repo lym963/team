@@ -228,5 +228,5 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
+    "pageSize"=>3,//偏移量  每页显示条数
 ];

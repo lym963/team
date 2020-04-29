@@ -26,12 +26,20 @@ Route::get("/index","Admin\IndexController@index");
 Route::prefix("/client")->group(function(){
     Route::get("index","Admin\ClientController@index");
     Route::get("create","Admin\ClientController@create");
+    Route::post("store","Admin\ClientController@store");
+    Route::get("edit/{id}","Admin\ClientController@edit");
+    Route::post("update/{id}","Admin\ClientController@update");
+    Route::get("destroy/{id}","Admin\ClientController@destroy");
 });
 
-//业务员管理
-Route::prefix("/sell")->group(function(){
-    Route::get("index","Admin\SellController@index");
-    Route::get("create","Admin\SellController@create");
+//管理员管理
+Route::prefix("/admin")->group(function(){
+    Route::get("index","Admin\AdminController@index");
+    Route::get("create","Admin\AdminController@create");
+    Route::post("store","Admin\AdminController@store");
+    Route::get("edit/{id}","Admin\AdminController@edit");
+    Route::post("update/{id}","Admin\AdminController@update");
+    Route::get("destroy/{id}","Admin\AdminController@destroy");
 });
         
 

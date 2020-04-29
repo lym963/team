@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Client;
-use App\Sell;
+use App\Admin;
 use Illuminate\Validation\Rule;
-class ClientController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +16,8 @@ class ClientController extends Controller
     public function index()
     {
         $pageSize=config("app.pageSize");
-        $data=Client::select("client.*","sell.sell_id","sell.sell_name")
-                    ->leftJoin("sell","client.sell_id","=","sell.sell_id")
-                    ->paginate($pageSize);
-        return view("admin.client.index",["data"=>$data]);
+        $data=Admin::paginate($pageSize);
+        return view("admin.admin.index",["data"=>$data]);
     }
 
     /**
@@ -30,8 +27,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $sell=Sell::get();
-        return view("admin.client.create",["sell"=>$sell]);
+        return view("admin.admin.create");
     }
 
     /**
@@ -44,16 +40,17 @@ class ClientController extends Controller
     {
         //表单验证
         $request->validate([ 
-            'client_name' => 'bail|required|unique:client|regex:/^[\x{4e00}-\x{9fa5}\w_]{2,50}$/u',
+            'admin_name' => 'bail|required|unique:admin|regex:/^[\x{4e00}-\x{9fa5}\w_]{2,50}$/u',
         ],[
-            "client_name.required"=>"客户名称不可为空",
-            "client_name.unique"=>"客户名称已存在",
-            "client_name.regex"=>"客户名称格式不正确",
+            "admin_name.required"=>"管理员名称不可为空",
+            "admin_name.unique"=>"管理员名称已存在",
+            "admin_name.regex"=>"管理员名称格式不正确",
         ]);
         $data=$request->except("_token");
-        $res=Client::insert($data);
+        $data["admin_pwd"]=encrypt($data["admin_pwd"]);
+        $res=Admin::insert($data);
         if($res){
-            return redirect("client/index");
+            return redirect("admin/index");
         }
     }
 
@@ -65,7 +62,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -76,9 +73,9 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        $sell=Sell::get();
-        $data=Client::find($id);
-        return view("admin.client.edit",["data"=>$data,"sell"=>$sell]);
+        $data=Admin::find($id);
+        $data["admin_pwd"]=decrypt($data["admin_pwd"]);
+        return view("admin.admin.edit",["data"=>$data]);
     }
 
     /**
@@ -92,21 +89,22 @@ class ClientController extends Controller
     {
         //表单验证
         $request->validate([ 
-            'client_name' => [
+            'admin_name' => [
                 'bail',
                 'required',
-                Rule::unique("client")->ignore($id,"client_id"),
+                Rule::unique("admin")->ignore($id,"admin_id"),
                 'regex:/^[\x{4e00}-\x{9fa5}\w_]{2,50}$/u'
             ]
         ],[
-            "client_name.required"=>"客户名称不可为空",
-            "client_name.unique"=>"客户名称已存在",
-            "client_name.regex"=>"客户名称格式不正确",
+            "admin_name.required"=>"管理员名称不可为空",
+            "admin_name.unique"=>"管理员名称已存在",
+            "admin_name.regex"=>"管理员名称格式不正确",
         ]);
         $data=$request->except("_token");
-        $res=Client::where("client_id",$id)->update($data);
+        $data["admin_pwd"]=encrypt($data["admin_pwd"]);
+        $res=Admin::where("admin_id",$id)->update($data);
         if($res){
-            return redirect("client/index");
+            return redirect("admin/index");
         }
     }
 
@@ -118,9 +116,9 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $res=Client::destroy($id);
+        $res=Admin::destroy($id);
         if($res){
-            return redirect("client/index");
+            return redirect("admin/index");
         }
     }
 }
