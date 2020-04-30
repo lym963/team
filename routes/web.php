@@ -62,3 +62,8 @@ Route::prefix("/call")->group(function(){
     Route::get("destroy/{id}","Admin\CallController@destroy");//删除
 
 });
+//统计分析
+Route::prefix("/stat")->group(function(){
+    Route::get("work","Admin\StatController@work");
+    Route::get("source","Admin\StatController@source");
+});

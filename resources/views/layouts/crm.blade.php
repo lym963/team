@@ -228,13 +228,13 @@
 
 							<ul class="submenu">
 								<li>
-									<a href="blog_list.html">
+									<a href="{{url('stat/work')}}">
 										<i class="icon-double-angle-right"></i>
 										客户行业统计
 									</a>
 								</li>
 								<li>
-									<a href="blog_add.html">
+									<a href="{{url('stat/source')}}">
 										<i class="icon-double-angle-right"></i>
 										客户来源统计
 									</a>
