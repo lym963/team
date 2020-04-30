@@ -21,7 +21,7 @@ Route::prefix("/login")->group(function(){
     Route::get("login","Admin\LoginController@login");
 });
 //首页
-Route::get("/","Admin\IndexController@index");
+Route::get("/index","Admin\IndexController@index");
 //客户管理
 Route::prefix("/client")->group(function(){
     Route::get("index","Admin\ClientController@index");
