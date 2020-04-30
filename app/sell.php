@@ -12,4 +12,5 @@ class Sell extends Model
     protected $primaryKey ="sell_id";
     //关闭自动时间
     public $timestamps = false;
+    protected $guarded=[];
 }
