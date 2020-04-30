@@ -204,13 +204,13 @@
 
 							<ul class="submenu">
 								<li>
-									<a href="blog_list.html">
+									<a href="{{url('search/client')}}">
 										<i class="icon-double-angle-right"></i>
 										客户信息查找
 									</a>
 								</li>
 								<li>
-									<a href="blog_add.html">
+									<a href="{{url('search/call')}}">
 										<i class="icon-double-angle-right"></i>
 										客户拜访记录查询
 									</a>

@@ -13,15 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 //登陆
 Route::prefix("/login")->group(function(){
     Route::get("login","Admin\LoginController@login");
 });
 //首页
-Route::get("/index","Admin\IndexController@index");
+Route::get("/","Admin\IndexController@index");
 //客户管理
 Route::prefix("/client")->group(function(){
     Route::get("index","Admin\ClientController@index");
@@ -66,4 +66,9 @@ Route::prefix("/call")->group(function(){
 Route::prefix("/stat")->group(function(){
     Route::get("work","Admin\StatController@work");
     Route::get("source","Admin\StatController@source");
+});
+//查询客户信息
+Route::prefix("/search")->group(function(){
+    Route::get("client","Admin\SearchController@client");//客户信息查询
+    Route::get("call","Admin\SearchController@call");//客户拜访记录查询
 });
