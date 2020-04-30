@@ -11,7 +11,7 @@
 								<i class="icon-home home-icon"></i>
 								<a href="{{url('/index')}}">首页</a>
 							</li>
-							<li class="active">业务员添加</li>
+							<li class="active">业务员修改</li>
 						</ul><!-- .breadcrumb -->
 					</div>
 
