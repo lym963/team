@@ -103,7 +103,7 @@ class AdminController extends Controller
         $data=$request->except("_token");
         $data["admin_pwd"]=encrypt($data["admin_pwd"]);
         $res=Admin::where("admin_id",$id)->update($data);
-        if($res){
+        if($res!==false){
             return redirect("admin/index");
         }
     }

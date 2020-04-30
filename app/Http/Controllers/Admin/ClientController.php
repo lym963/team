@@ -105,7 +105,7 @@ class ClientController extends Controller
         ]);
         $data=$request->except("_token");
         $res=Client::where("client_id",$id)->update($data);
-        if($res){
+        if($res!==false){
             return redirect("client/index");
         }
     }
